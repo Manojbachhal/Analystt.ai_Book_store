@@ -8,7 +8,7 @@ function Pagination({ page, setPage }) {
             <Button
                 colorScheme="gray"
                 border="2px"
-                borderColor="red.400"
+                borderColor="#015A62"
                 borderRadius="full"
                 onClick={() => {
                     setPage(page - 1);
@@ -19,7 +19,7 @@ function Pagination({ page, setPage }) {
             <Button
                 colorScheme="gray"
                 border="2px"
-                borderColor="red.400"
+                borderColor="#015A62"
                 borderRadius="full"
             >
                 {page}
@@ -27,7 +27,7 @@ function Pagination({ page, setPage }) {
             <Button
                 colorScheme="gray"
                 border="2px"
-                borderColor="red.400"
+                borderColor="#015A62"
                 borderRadius="full"
                 onClick={() => {
                     setPage(page + 1);

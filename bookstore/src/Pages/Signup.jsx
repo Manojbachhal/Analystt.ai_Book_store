@@ -10,20 +10,33 @@ import {
     Stack,
     Image,
 } from '@chakra-ui/react';
+import axios from 'axios';
+import { useState } from 'react';
 
 export default function Signup() {
+    let [data, setData] = useState({})
+    const handlesignup = async () => {
+        let res = await axios.post("http://127.0.0.1:8000/signup", data)
+        console.log(res)
+    }
+    const handlesubmit = (e) => {
+        let name = e.target.name
+        let value = e.target.value
+        setData({ ...data, [name]: value })
+        console.log(data)
+    }
     return (
         <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
-                    <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+                    <Heading fontSize={'2xl'}>Sign up to your account</Heading>
                     <FormControl id="email">
                         <FormLabel>Email address</FormLabel>
-                        <Input type="email" />
+                        <Input type="email" name="username" onChange={handlesubmit} />
                     </FormControl>
                     <FormControl id="password">
                         <FormLabel>Password</FormLabel>
-                        <Input type="password" />
+                        <Input type="password" name="password" onChange={handlesubmit} />
                     </FormControl>
                     <Stack spacing={6}>
                         <Stack
@@ -33,8 +46,8 @@ export default function Signup() {
                             <Checkbox>Remember me</Checkbox>
                             <Link color={'blue.500'}>Forgot password?</Link>
                         </Stack>
-                        <Button colorScheme={'blue'} variant={'solid'}>
-                            Sign in
+                        <Button colorScheme={'blue'} variant={'solid'} onClick={handlesignup}>
+                            Submit
                         </Button>
                     </Stack>
                 </Stack>

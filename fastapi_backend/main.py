@@ -1,15 +1,20 @@
 import json
 from typing import Union
-from fastapi import  FastAPI
+from fastapi import  FastAPI ,Request
 from pymongo import MongoClient
 from bson.json_util import dumps
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo.cursor import Cursor
-
+from pydantic import BaseModel
 # MongoDB connection
 conn = MongoClient("mongodb+srv://manoj:kvno1chm@ikea.mkadg2e.mongodb.net/ikea?retryWrites=true&w=majority")
 db = conn['Bookstore']  # Select the database
 collection = db['Bookstore']  # Select the collection
+userCollection = db['User']  # Select the collection
+
+class userSchema(BaseModel):
+    username:str
+    password:str
 
 app = FastAPI()
 
@@ -63,6 +68,35 @@ async def search_book(title: str = None, genres:str=None, rating: int= None , pa
         "page": page,
         "limit": limit
     }
+
+@app.post("/signup")
+async def sign_up(request :Request):
+    user= userSchema(**await request.json())
+    check =userCollection.find_one({"username":user.username})
+   
+
+    if check:
+        return {"messege" : "User already Exist"}
+    else:
+        userCollection.insert_one({"username": user.username, "password": user.password})
+        return {"messege" : "User created successfully"}
+
+
+
+@app.post("/signin")
+async def sign_in(request: Request):
+    user = userSchema(**await request.json())
+
+    user_data = userCollection.find_one({"username": user.username})
+    # print(user_data)
+
+    if user_data and user.username == user_data.get("username") and user.password == user_data.get("password"):
+        return {"token": "test"}  # Successful login, return token
+    else:
+        return {"message": "Login failed"}  # Invalid credentials
+    
+    
+    
 
     
 
