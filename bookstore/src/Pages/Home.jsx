@@ -16,16 +16,15 @@ function Home() {
         })();
     }, [page])
     return (
-        <Box p='3'>
+        <Box p='3' mt="9%">
             <Flex justifyContent='space-around' gap={4}>
                 <Input type='search'
-                    border="2px"
-                    borderColor="red.400"
+                    border="3px solid #015A62"
                     borderRadius="full"
                 ></Input>
                 <Button
                     border="2px"
-                    borderColor="red.400"
+                    borderColor="#015A62"
                     borderRadius="full"
                 >Search</Button>
             </Flex>
@@ -38,7 +37,7 @@ function Home() {
 
                 {
                     allbooks?.map((ele) => {
-                        return <GridItem textAlign='left' >
+                        return <GridItem p="3" textAlign='left' key={ele.title} boxShadow="rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset">
                             <Image src={ele.coverImg} alt={ele.title} width='100%' height='300px' />
                             <h1>Title : {ele.title}</h1>
                             <h2>Author : {ele.author}</h2>
