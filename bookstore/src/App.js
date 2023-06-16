@@ -1,4 +1,3 @@
-import Home from "./Pages/Home";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Allroutes from "./Routing/Allroutes";

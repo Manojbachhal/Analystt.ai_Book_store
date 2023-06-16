@@ -3,9 +3,17 @@ import { Box, Button, Flex, Grid, GridItem, Image, Input } from "@chakra-ui/reac
 import { useEffect } from 'react'
 import { useState } from 'react'
 import Pagination from '../components/Pagination'
+import axios from 'axios'
 function Home() {
     const [allbooks, setbooks] = useState();
     const [page, setPage] = useState(1);
+    let addtoCart = async (obj) => {
+        obj.username = JSON.parse(localStorage.getItem("booksusername"))
+        obj.count = 1
+        delete obj._id
+        console.log(obj)
+        let res = await axios.post("http://127.0.0.1:8000/cart", obj)
+    }
     useEffect(() => {
         (async () => {
             let res = await fetch(`http://127.0.0.1:8000/books?page=${page}`);
@@ -37,13 +45,18 @@ function Home() {
 
                 {
                     allbooks?.map((ele) => {
-                        return <GridItem p="3" textAlign='left' key={ele.title} boxShadow="rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset">
-                            <Image src={ele.coverImg} alt={ele.title} width='100%' height='300px' />
-                            <h1>Title : {ele.title}</h1>
-                            <h2>Author : {ele.author}</h2>
-                            <h2>Language : {ele.language}</h2>
-                            <h2>Rating : {ele.rating}</h2>
+                        return <GridItem p="3" textAlign='center' key={ele.title} boxShadow="rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset">
+                            <Box height="450px">
+                                <Image src={ele.coverImg} alt={ele.title} width='100%' height='300px' />
+                                <h1>Title : {ele.title}</h1>
+                                <h2>Author : {ele.author}</h2>
+                                <h2>Language : {ele.language}</h2>
+                                <h2>Rating : {ele.rating}</h2>
+                            </Box>
                             {/* <p>{ele.description}</p> */}
+                            <Box mt="2" mb="2">
+                                <Button onClick={() => addtoCart(ele)}>Add to Cart</Button>
+                            </Box>
                         </GridItem>
                     })
                 }

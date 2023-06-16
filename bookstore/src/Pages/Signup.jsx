@@ -12,12 +12,19 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function Signup() {
     let [data, setData] = useState({})
+    let navigate = useNavigate();
     const handlesignup = async () => {
         let res = await axios.post("http://127.0.0.1:8000/signup", data)
-        console.log(res)
+        // console.log(res.data)
+        if (res.data.messege == "User created successfully") {
+            navigate("/signin")
+            // console.log("first")
+        }
     }
     const handlesubmit = (e) => {
         let name = e.target.name

@@ -1,22 +1,47 @@
+from typing import List
 import json
-from typing import Union
 from fastapi import  FastAPI ,Request
 from pymongo import MongoClient
 from bson.json_util import dumps
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo.cursor import Cursor
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
+from bson import ObjectId
 # MongoDB connection
 conn = MongoClient("mongodb+srv://manoj:kvno1chm@ikea.mkadg2e.mongodb.net/ikea?retryWrites=true&w=majority")
+
 db = conn['Bookstore']  # Select the database
-collection = db['Bookstore']  # Select the collection
-userCollection = db['User']  # Select the collection
+
+collection = db['Bookstore']  # Select the bookstore collection
+
+userCollection = db['User']  # Select the user collection
+
+cartCollection = db['Cart']  # Select the cart collection
 
 class userSchema(BaseModel):
     username:str
     password:str
 
+class cartSchema(BaseModel):
+    username: str
+    count: int
+    title: str
+    series: str
+    author: str
+    rating: int
+    description: str
+    language: str
+    genres: List[str]
+    bookFormat:str
+    edition:str
+    pages:int
+    coverImg:str
+    price:int
+
+
 app = FastAPI()
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,6 +50,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/books")
 async def get_data(page: int = 1, limit: int = 12):
@@ -91,15 +117,26 @@ async def sign_in(request: Request):
     # print(user_data)
 
     if user_data and user.username == user_data.get("username") and user.password == user_data.get("password"):
-        return {"token": "test"}  # Successful login, return token
+        return {"token": "Sign in Sucessful"}  # Successful login, return token
     else:
         return {"message": "Login failed"}  # Invalid credentials
     
     
+@app.post("/cart")
+async def add_to_cart(request:Request):
+
+    cart_data = await request.json()
+    cart= cartSchema(**cart_data)
+    print(cart_data)
+    existing_cart = collection.find_one({"username":cart.username})
     
+    if existing_cart:
+        return {"count": existing_cart['count']}
+    else:
+        result = cartCollection.insert_one(cart_data)
+        return {"_id": str(result.inserted_id)}
 
     
-
 
 
 
