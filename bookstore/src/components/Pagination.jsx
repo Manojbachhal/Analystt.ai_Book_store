@@ -2,7 +2,7 @@ import { Flex, Button } from "@chakra-ui/react";
 import React from "react";
 
 function Pagination({ page, setPage }) {
-    console.log(page)
+    // console.log(page)
     return (
         <Flex gap="4" justifyContent="center" pt="5">
             <Button

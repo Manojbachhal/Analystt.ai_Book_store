@@ -39,11 +39,11 @@ export default function Signup() {
                     <Heading fontSize={'2xl'}>Sign up to your account</Heading>
                     <FormControl id="email">
                         <FormLabel>Email address</FormLabel>
-                        <Input type="email" name="username" onChange={handlesubmit} />
+                        <Input type="email" name="username" onChange={handlesubmit} placeholder="Enter your email or username" />
                     </FormControl>
                     <FormControl id="password">
                         <FormLabel>Password</FormLabel>
-                        <Input type="password" name="password" onChange={handlesubmit} />
+                        <Input type="password" name="password" onChange={handlesubmit} placeholder="Enter your password" />
                     </FormControl>
                     <Stack spacing={6}>
                         <Stack
@@ -51,10 +51,10 @@ export default function Signup() {
                             align={'start'}
                             justify={'space-between'}>
                             <Checkbox>Remember me</Checkbox>
-                            <Link color={'blue.500'}>Forgot password?</Link>
+                            <Link color="#1A5D4F">Forgot password?</Link>
                         </Stack>
-                        <Button colorScheme={'blue'} variant={'solid'} onClick={handlesignup}>
-                            Submit
+                        <Button background="#1A5D4F" variant={'solid'} onClick={handlesignup}>
+                            Register
                         </Button>
                     </Stack>
                 </Stack>
