@@ -74,6 +74,8 @@ async def get_data(page: int = 1, limit: int = 12):
     }
 
 
+
+
 @app.get("/search")
 async def search_book(title: str = None, genres: str = None, rating: int = None, page: int = 1, limit: int = 12):
 
@@ -99,6 +101,8 @@ async def search_book(title: str = None, genres: str = None, rating: int = None,
     }
 
 
+
+
 @app.post("/signup")
 async def sign_up(request: Request):
     user = userSchema(**await request.json())
@@ -112,6 +116,8 @@ async def sign_up(request: Request):
         return {"messege": "User created successfully"}
 
 
+
+
 @app.post("/signin")
 async def sign_in(request: Request):
     user = userSchema(**await request.json())
@@ -123,6 +129,8 @@ async def sign_in(request: Request):
         return {"token": "Sign in Sucessful"}  # Successful login, return token
     else:
         return {"message": "Login failed"}  # Invalid credentials
+
+
 
 
 @app.post("/cart/add")
@@ -140,6 +148,8 @@ async def add_to_cart(request: Request):
         result = cartCollection.insert_one(cart_data)
         return {"_id": str(result.inserted_id)}
 
+
+
 @app.post("/cart")
 async def get_cart_data(request:Request):
     userData= await request.json()
@@ -149,6 +159,8 @@ async def get_cart_data(request:Request):
     stringdata= dumps(data)
     json_data= json.loads(stringdata)
     return json_data
+
+ 
     
 @app.post("/cart/remove")
 async def remove_from_cart(request:Request):
@@ -160,14 +172,4 @@ async def remove_from_cart(request:Request):
     else:
         return {"message": "Book not found"}
 
-# @app.delete("/book/{book_id}")
-# async def delete_book(book_id:str):
-
-#     # Delete the book based on the provided book_id
-#     result = collection.delete_one({"_id":{"$oid":book_id}})
-
-#     print(result)
-
-#     if result.deleted_count:
-#         return {"message": "Book deleted successfully"}
-#     
+    
