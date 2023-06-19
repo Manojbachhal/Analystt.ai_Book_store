@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Box, Button, Flex, Grid, GridItem, Heading, Image, Input, Radio, RadioGroup, Stack } from "@chakra-ui/react"
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import Pagination from '../components/Pagination'
 import axios from 'axios'
+import { AuthContext } from '../contextApi/ContextApi'
 function Home() {
     const [allbooks, setbooks] = useState();
     const [page, setPage] = useState(1);
     const [searchData, setSearchData] = useState();
     const [searchType, setValue] = React.useState('')
-    // console.log(searchType)
+    let { loginData, setLogin } = useContext(AuthContext)
+
     let addtoCart = async (obj) => {
-        obj.username = JSON.parse(localStorage.getItem("booksusername"))
+        obj.username = loginData.username;
         obj.count = 1
         delete obj._id
         let res = await axios.post("http://127.0.0.1:8000/cart/add", obj)

@@ -1,13 +1,16 @@
 import { Box, Button, Flex, Heading, Image } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../contextApi/ContextApi';
 
 function Cart() {
+    let { loginData, setLogin } = useContext(AuthContext)
+
     const [data, setData] = useState([]);
     const getData = async () => {
         // console.log("first")
         let obj = {
-            username: JSON.parse(localStorage.getItem("booksusername"))
+            username: loginData.username
         }
         let res = await axios.post("http://127.0.0.1:8000/cart", obj)
         // console.log(res)
@@ -15,7 +18,7 @@ function Cart() {
 
     }
     const updataCart = async (obj) => {
-        obj.username = JSON.parse(localStorage.getItem("booksusername"))
+        obj.username = loginData.username
         obj.count = 1
         delete obj._id
         let res = await axios.post("http://127.0.0.1:8000/cart/add", obj).then(() => getData())

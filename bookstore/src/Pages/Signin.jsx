@@ -10,12 +10,19 @@ import {
     Stack,
     Image,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../contextApi/ContextApi";
 export default function Signin() {
-    let [data, setData] = useState({});
+
+    let { loginData, setLogin } = useContext(AuthContext)
+
+
+    let [data, setData] = useState({
+        username: '',
+        password: ''
+    });
     let navigate = useNavigate();
 
     const handlesignin = async () => {
@@ -23,8 +30,8 @@ export default function Signin() {
         console.log(res);
 
         if (res.data.token == "Sign in Sucessful") {
-            localStorage.setItem("booksusername", JSON.stringify(data.username))
-            localStorage.setItem("bookslogin", JSON.stringify(true))
+            setLogin({ ...loginData, login: true, username: data.username })
+            console.log(loginData)
             navigate("/");
         }
     };

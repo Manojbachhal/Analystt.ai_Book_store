@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from '../Pages/Home'
 import Signin from '../Pages/Signin'
 import Signup from '../Pages/Signup'
 import Cart from '../Pages/Cart'
+import { AuthContext } from '../contextApi/ContextApi'
 
 function Allroutes() {
-    const [login, setLogin] = useState(JSON.parse(localStorage.getItem('bookslogin')))
+    let { loginData, setLogin } = useContext(AuthContext)
+
 
 
     return (
@@ -15,8 +17,8 @@ function Allroutes() {
                 {/* <Route path="/" element={login ? <Home /> : <Signin />} /> */}
                 <Route path="/" element={<Home />} />
                 < Route path="/signup" element={<Signup />} />
-                <Route path="/signin" element={login ? <Home /> : <Signin />} />
-                <Route path="/cart" element={login ? <Cart /> : <Signin />} />
+                <Route path="/signin" element={loginData.login ? <Home /> : <Signin />} />
+                <Route path="/cart" element={loginData.login ? <Cart /> : <Signin />} />
             </Routes>
         </div>
     )
